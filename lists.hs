@@ -6,7 +6,7 @@ myLast [] = error "No end for empty lists!"
 
 -- Problem 2
 myButLast :: [a] -> a
-myButLast (x : _ : []) = x
+myButLast [x, _] = x
 myButLast (h : t) = myButLast t
 myButLast _ = error "List with at least 2 elems."
 
@@ -50,7 +50,7 @@ compress l = compress' l [] where
               compress' (h : t) [] = compress' t [h]
               compress' [] acc = reverse acc
               compress' (h : t) acc
-                | h == (head acc) = compress' t acc
+                | h == head acc = compress' t acc
                 | otherwise       = compress' t (h : acc)
 
 
