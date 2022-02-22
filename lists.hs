@@ -67,3 +67,73 @@ encode [] = []
 encode (x:xs) = let (f, r) = span (==x) xs
                 in (length (x : f), x) : encode r
 
+
+-- Problem 11
+data EncodedItem a = Single a | Multiple Int a
+                        deriving (Show)
+encodeModified :: Eq a => [a] -> [EncodedItem a]
+encodeModified l = map helper (encode l) where
+                    helper (1, a) = Single a
+                    helper (n, a) = Multiple n a 
+
+-- Problem 12
+decodeModified :: [EncodedItem a] -> [a]
+decodeModified = concatMap decodeItem where
+                    decodeItem (Single v) = [v]
+                    decodeItem (Multiple n v) = replicate n v 
+
+
+-- Problem 13
+-- I don't understand how is that different from 11
+
+
+-- Problem 14
+dupli :: [a] -> [a]
+dupli [] = []
+dupli [x] = [x, x]
+dupli (x : xs) = x : x : dupli xs
+
+
+-- Problem 15
+repli :: [a] -> Int -> [a]
+repli l n = concatMap (replicate n) l
+
+
+-- Problem 16
+dropEvery :: [a] -> Int -> [a]
+dropEvery l n = [x | (x, i) <- zip l [1 .. length l], mod i n /= 0]
+
+
+-- Problem 17
+split :: [a] -> Int -> ([a], [a])
+split l n = foldl split' ([], []) l where
+                split' (f, s) e
+                    | length f < n = (reverse (e : reverse f), s)
+                    | otherwise = (f, reverse (e : reverse s))
+
+
+-- Problem 18
+slice :: [a] -> Int -> Int -> [a]
+slice l m n = [x | (x, i) <- zip l [1 .. n], i >= m]
+
+
+-- Problem 19
+rotate :: [a] -> Int -> [a]
+rotate l n = if n < 0
+                then
+                    let l' = reverse l
+                        n' = abs n
+                    in reverse (drop n' l' ++ take n' l')
+                else drop n l ++ take n l
+
+
+-- Problem 20
+removeAt :: Int -> [a] -> (a, [a])
+removeAt 0 _ = error "Invalid index"
+removeAt _ [] = error "Cannot remove from empty list"
+removeAt n l = removeAt' l [] 1 where
+                    removeAt' (x:xs) acc i
+                        | i == n = (x, reverse acc ++ xs)
+                        | otherwise = removeAt' xs (x : acc) (i + 1)
+                    removeAt' [] _ _ = error "Unknown error"
+
