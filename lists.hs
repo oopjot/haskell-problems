@@ -137,3 +137,30 @@ removeAt n l = removeAt' l [] 1 where
                         | otherwise = removeAt' xs (x : acc) (i + 1)
                     removeAt' [] _ _ = error "Unknown error"
 
+
+-- Problem 21
+insertAt :: a -> [a] -> Int -> [a]
+insertAt _ _ 0 = error "Index must be positive"
+insertAt _ l n
+    | length l < n - 1 = error "Index out of range"
+insertAt a l n = insertAt' [] l where
+                    insertAt' acc (x:xs)
+                        | length acc == n - 1 = reverse (x : a : acc) ++ xs
+                        | otherwise = insertAt' (x : acc) xs
+                    insertAt' acc [] = reverse (a : acc)
+
+
+-- Problem 22
+range :: Int -> Int -> [Int]
+range n m = [n .. m]
+
+
+-- Problem 23-25
+-- These problems require IO/Monad knowledge, back at it l8er
+
+
+-- Problem 26
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _ = [[]]
+combinations n l = [l !! i : x | i <- [0..length l - 1], x <- combinations (n - 1) (drop (i + 1) l)]
+
