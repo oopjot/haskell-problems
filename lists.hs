@@ -35,7 +35,7 @@ myReverse (h : t) = myReverse t ++ [h]
 -- Problem 6
 isPalindrome :: (Ord a) => [a] -> Bool
 isPalindrome [] = True
-isPalindrome l = foldl (&&) True [f == s | (f, s) <- zip l (reverse l)]
+isPalindrome l = and [f == s | (f, s) <- zip l (reverse l)]
 
 -- Problem 7
 data NestedList a = Elem a | List [NestedList a]
