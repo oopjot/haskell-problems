@@ -44,6 +44,7 @@ infixl 6 `and'`
 infixl 6 `nand'`
 infixl 3 `equ'`
 
+
 -- Problem 48
 tablen :: Int -> ([Bool] -> Bool) -> IO ()
 tablen n expr = mapM_ putStrLn [
@@ -51,4 +52,14 @@ tablen n expr = mapM_ putStrLn [
     | args <- replicateM n [True, False]
     , let argStr = concatMap ((++ "\t") . show) args
     ]
+
+
+-- Problem 49
+gray :: Int -> [String]
+gray 0 = [""]
+gray n = foldr (\a acc -> ['0':a] ++ acc ++ ['1':a]) [] $ gray (n - 1)
+
+
+-- Problem 50
+
 
