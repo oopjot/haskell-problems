@@ -1,4 +1,7 @@
 import Control.Monad (replicateM)
+import Data.Function (on)
+import Data.List (sortBy)
+import Data.Ord (comparing)
 
 -- Problem 46 and 47
 not' :: Bool -> Bool
@@ -61,5 +64,25 @@ gray n = foldr (\a acc -> ['0':a] ++ acc ++ ['1':a]) [] $ gray (n - 1)
 
 
 -- Problem 50
+data Tree a = Leaf a | Root (Tree a) (Tree a) deriving (Show)
+huffman :: [(Char, Int)] -> [(Char, String)]
+huffman [] = undefined
+huffman x = sortBy (comparing fst) 
+            $ encode
+            $ fst 
+            $ head (buildTree
+            $ sortBy (comparing snd) [(Leaf s, v) | (s, v) <- x])
+    where
+            buildTree ((t1, v1):(t2, v2):ts) =
+                buildTree 
+                $ sortBy (comparing snd) ((Root t1 t2, v1 + v2) : ts)
+            buildTree [(t, v)] = [(t, v)]
+            buildTree [] = []
+            encode (Leaf c) = [(c, "")]
+            encode (Root l r) = 
+                [(c, '0':r) | (c, r) <- encode l]
+                ++ [(c, '1':r) | (c, r) <- encode r]
+
+
 
 
