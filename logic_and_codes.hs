@@ -69,15 +69,14 @@ huffman :: [(Char, Int)] -> [(Char, String)]
 huffman [] = undefined
 huffman x = sortBy (comparing fst) 
             $ encode
-            $ fst 
-            $ head (buildTree
-            $ sortBy (comparing snd) [(Leaf s, v) | (s, v) <- x])
+            $ buildTree
+            $ sortBy (comparing snd) [(Leaf s, v) | (s, v) <- x]
     where
             buildTree ((t1, v1):(t2, v2):ts) =
                 buildTree 
                 $ sortBy (comparing snd) ((Root t1 t2, v1 + v2) : ts)
-            buildTree [(t, v)] = [(t, v)]
-            buildTree [] = []
+            buildTree [(t, v)] = t
+            buildTree [] = error "No empty tree allowed"
             encode (Leaf c) = [(c, "")]
             encode (Root l r) = 
                 [(c, '0':r) | (c, r) <- encode l]
